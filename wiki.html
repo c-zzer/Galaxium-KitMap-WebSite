@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galaxium KitMap — Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0D0E14; --bg2: #13141D; --bg3: #1A1C2A;
+    --border: rgba(255,255,255,0.06);
+    --pink: #FF2D9B; --violet: #C13FFF;
+    --grad: linear-gradient(135deg, #FF2D9B, #C13FFF);
+    --text: #E8E9F0; --muted: #7A7D96;
+    --font-h: 'Space Grotesk', sans-serif;
+    --font-b: 'Inter', sans-serif;
+    --radius: 14px;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-b); line-height: 1.7; min-height: 100vh; }
+
+  /* HEADER */
+  header { position: sticky; top: 0; z-index: 100; background: rgba(13,14,20,0.88); backdrop-filter: blur(18px); border-bottom: 1px solid var(--border); }
+  .header-inner { max-width: 1200px; margin: 0 auto; padding: 0 32px; height: 68px; display: flex; align-items: center; justify-content: space-between; }
+  .logo-img { display: flex; align-items: center; text-decoration: none; }
+  .logo-img-el { height: 52px; width: auto; object-fit: contain; display: block; }
+  nav { display: flex; align-items: center; gap: 8px; }
+  nav a { font-size: 0.875rem; font-weight: 500; color: var(--muted); text-decoration: none; padding: 7px 14px; border-radius: 8px; transition: all 0.18s; }
+  nav a:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+  nav a.nav-wiki { color: var(--text); background: rgba(193,63,255,0.1); border: 1px solid rgba(193,63,255,0.3); }
+  nav a.nav-discord { color: var(--text); background: rgba(255,45,155,0.12); border: 1px solid rgba(255,45,155,0.25); }
+  nav a.nav-discord:hover { background: rgba(255,45,155,0.22); color: #fff; }
+  .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+  .menu-toggle span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; margin: 4px 0; }
+
+  /* LAYOUT */
+  .wiki-layout { max-width: 1200px; margin: 0 auto; padding: 48px 32px; display: grid; grid-template-columns: 260px 1fr; gap: 40px; align-items: start; }
+
+  /* SIDEBAR */
+  .wiki-sidebar { position: sticky; top: 88px; }
+  .sidebar-box { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+  .sidebar-title { font-family: var(--font-h); font-size: 0.75rem; font-weight: 600; color: var(--pink); letter-spacing: 0.08em; margin-bottom: 16px; }
+  .sidebar-section { margin-bottom: 6px; }
+  .sidebar-section-label { font-size: 0.7rem; color: var(--muted); font-weight: 600; letter-spacing: 0.06em; padding: 6px 8px 4px; display: block; }
+  .sidebar-link { display: flex; align-items: center; gap: 8px; padding: 7px 8px; border-radius: 8px; color: var(--muted); text-decoration: none; font-size: 0.82rem; transition: all 0.15s; }
+  .sidebar-link:hover, .sidebar-link.active { background: rgba(255,45,155,0.1); color: var(--text); }
+  .sidebar-link .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: background 0.15s; }
+  .sidebar-link:hover .dot, .sidebar-link.active .dot { background: var(--pink); }
+
+  /* CONTENT */
+  .wiki-content { min-width: 0; }
+  .wiki-hero { background: var(--bg2); border: 1px solid var(--border); border-radius: 18px; padding: 40px; margin-bottom: 40px; position: relative; overflow: hidden; }
+  .wiki-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 80% 40%, rgba(193,63,255,0.1) 0%, transparent 60%); pointer-events: none; }
+  .wiki-hero-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 600; color: var(--violet); background: rgba(193,63,255,0.1); border: 1px solid rgba(193,63,255,0.25); border-radius: 100px; padding: 4px 12px; margin-bottom: 16px; }
+  .wiki-hero h1 { font-family: var(--font-h); font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .wiki-hero p { font-size: 0.95rem; color: var(--muted); max-width: 560px; }
+
+  /* SECTIONS */
+  .wiki-section { margin-bottom: 48px; scroll-margin-top: 90px; }
+  .section-anchor { scroll-margin-top: 90px; }
+  .section-head { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .section-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+  .section-icon.pink { background: rgba(255,45,155,0.15); }
+  .section-icon.violet { background: rgba(193,63,255,0.15); }
+  .section-icon.green { background: rgba(61,255,122,0.12); }
+  .section-icon.orange { background: rgba(255,160,50,0.12); }
+  .section-icon.blue { background: rgba(50,160,255,0.12); }
+  .section-title { font-family: var(--font-h); font-size: 1.3rem; font-weight: 700; letter-spacing: -0.01em; }
+
+  /* CARDS */
+  .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px; }
+  .info-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 18px; transition: border-color 0.2s; }
+  .info-card:hover { border-color: rgba(255,45,155,0.3); }
+  .info-card-icon { font-size: 1.3rem; margin-bottom: 10px; }
+  .info-card-title { font-family: var(--font-h); font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; }
+  .info-card-text { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+  /* TABLE */
+  .wiki-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 20px; }
+  .wiki-table th { text-align: left; padding: 10px 14px; font-size: 0.72rem; font-weight: 600; color: var(--muted); letter-spacing: 0.05em; border-bottom: 1px solid var(--border); background: var(--bg3); }
+  .wiki-table th:first-child { border-radius: 8px 0 0 0; }
+  .wiki-table th:last-child { border-radius: 0 8px 0 0; }
+  .wiki-table td { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; color: var(--text); }
+  .wiki-table tr:last-child td { border-bottom: none; }
+  .wiki-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .tag { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 600; }
+  .tag-pink { background: rgba(255,45,155,0.15); color: var(--pink); border: 1px solid rgba(255,45,155,0.3); }
+  .tag-violet { background: rgba(193,63,255,0.15); color: var(--violet); border: 1px solid rgba(193,63,255,0.3); }
+  .tag-green { background: rgba(61,255,122,0.12); color: #3DFF7A; border: 1px solid rgba(61,255,122,0.25); }
+  .tag-orange { background: rgba(255,160,50,0.12); color: #FFA032; border: 1px solid rgba(255,160,50,0.25); }
+  .tag-blue { background: rgba(80,160,255,0.12); color: #50A0FF; border: 1px solid rgba(80,160,255,0.25); }
+  .tag-grey { background: rgba(255,255,255,0.06); color: var(--muted); border: 1px solid var(--border); }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; gap: 12px; }
+  .step { display: flex; gap: 16px; align-items: flex-start; }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--grad); display: flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 700; color: #fff; flex-shrink: 0; margin-top: 2px; }
+  .step-body { flex: 1; }
+  .step-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 3px; }
+  .step-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+  /* CALLOUT */
+  .callout { border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start; font-size: 0.85rem; }
+  .callout-info { background: rgba(80,160,255,0.08); border: 1px solid rgba(80,160,255,0.2); }
+  .callout-warn { background: rgba(255,160,50,0.08); border: 1px solid rgba(255,160,50,0.2); }
+  .callout-tip { background: rgba(61,255,122,0.07); border: 1px solid rgba(61,255,122,0.2); }
+  .callout-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+  .callout-text { line-height: 1.5; color: var(--text); }
+  .callout-text strong { color: #fff; }
+
+  /* CODE */
+  code { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 2px 7px; font-size: 0.82rem; font-family: 'Courier New', monospace; color: var(--pink); }
+
+  /* FORGE GRID */
+  .forge-grid { display: grid; grid-template-columns: repeat(3, 52px); gap: 4px; margin: 12px 0; }
+  .forge-cell { width: 52px; height: 52px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; text-align: center; color: var(--muted); line-height: 1.2; padding: 4px; }
+  .forge-cell.filled { border-color: rgba(255,45,155,0.4); color: var(--text); background: rgba(255,45,155,0.06); }
+  .forge-cell.output { border-color: rgba(193,63,255,0.5); color: var(--violet); background: rgba(193,63,255,0.1); }
+  .forge-recipe { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 24px; }
+  .forge-arrow { font-size: 1.4rem; color: var(--pink); }
+
+  /* KIT DISPLAY */
+  .kit-box { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+  .kit-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+  .kit-name { font-family: var(--font-h); font-size: 1.1rem; font-weight: 700; }
+  .kit-cooldown { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+  .kit-items { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .kit-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; padding: 6px 10px; background: var(--bg3); border-radius: 8px; }
+  .kit-item::before { content: '▸'; color: var(--pink); font-size: 0.65rem; flex-shrink: 0; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .wiki-layout { grid-template-columns: 1fr; padding: 32px 20px; }
+    .wiki-sidebar { position: static; }
+    .info-grid { grid-template-columns: 1fr; }
+    .kit-items { grid-template-columns: 1fr; }
+    .header-inner { padding: 0 20px; }
+    nav { display: none; position: absolute; top: 68px; left: 0; right: 0; flex-direction: column; background: var(--bg2); border-bottom: 1px solid var(--border); padding: 12px 20px; gap: 4px; }
+    nav.open { display: flex; }
+    .menu-toggle { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo-img"><img src="data:image/png;base64,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" alt="Galaxium KitMap" class="logo-img-el"></a>
+    <nav id="nav">
+      <a href="index.html">Accueil</a>
+      <a href="index.html#boutique">Boutique</a>
+      <a href="wiki.html" class="nav-wiki">Wiki</a>
+      <a href="https://discord.gg/GBa9nyRRh" class="nav-discord" target="_blank">Discord ↗</a>
+    </nav>
+    <button class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="wiki-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="wiki-sidebar">
+    <div class="sidebar-box">
+      <div class="sidebar-title">Navigation</div>
+
+      <div class="sidebar-section">
+        <span class="sidebar-section-label">Démarrage</span>
+        <a href="#rejoindre" class="sidebar-link"><span class="dot"></span>Rejoindre le serveur</a>
+        <a href="#ip" class="sidebar-link"><span class="dot"></span>IP &amp; connexion</a>
+      </div>
+
+      <div class="sidebar-section">
+        <span class="sidebar-section-label">Gameplay</span>
+        <a href="#kits" class="sidebar-link"><span class="dot"></span>Les Kits</a>
+        <a href="#mineraux" class="sidebar-link"><span class="dot"></span>Minerais custom</a>
+        <a href="#forge" class="sidebar-link"><span class="dot"></span>Galaxium Forge</a>
+        <a href="#boxes" class="sidebar-link"><span class="dot"></span>Boxes &amp; Clés</a>
+        <a href="#market" class="sidebar-link"><span class="dot"></span>Market</a>
+        <a href="#factions" class="sidebar-link"><span class="dot"></span>Factions</a>
+        <a href="#metiers" class="sidebar-link"><span class="dot"></span>Métiers</a>
+      </div>
+
+      <div class="sidebar-section">
+        <span class="sidebar-section-label">Combat</span>
+        <a href="#pvp" class="sidebar-link"><span class="dot"></span>Règles PvP</a>
+        <a href="#soups" class="sidebar-link"><span class="dot"></span>Soups &amp; Pearls</a>
+      </div>
+
+      <div class="sidebar-section">
+        <span class="sidebar-section-label">Commandes</span>
+        <a href="#commandes" class="sidebar-link"><span class="dot"></span>Toutes les commandes</a>
+        <a href="#grade" class="sidebar-link"><span class="dot"></span>Grade Galaxium</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="wiki-content">
+
+    <!-- HERO -->
+    <div class="wiki-hero">
+      <div class="wiki-hero-tag">📖 Wiki officiel</div>
+      <h1>Guide Galaxium KitMap</h1>
+      <p>Tout ce que tu dois savoir pour dominer le serveur — kits, minerais, forge, factions et bien plus. Lis ça et tes ennemis n'auront aucune chance.</p>
+    </div>
+
+    <!-- REJOINDRE -->
+    <section class="wiki-section" id="rejoindre">
+      <div class="section-head">
+        <div class="section-icon green">🚀</div>
+        <div class="section-title">Rejoindre le serveur</div>
+      </div>
+
+      <div class="callout callout-info">
+        <span class="callout-icon">ℹ️</span>
+        <div class="callout-text">Galaxium KitMap est un serveur <strong>Minecraft Bedrock</strong>. Tu dois jouer depuis Windows 10/11, Xbox, PlayStation, Nintendo Switch, iOS ou Android.</div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Ouvre Minecraft Bedrock</div>
+            <div class="step-desc">Lance le jeu depuis ton appareil. Assure-toi d'être connecté à un compte Microsoft.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Va dans "Serveurs"</div>
+            <div class="step-desc">Depuis le menu principal, clique sur <strong>Jouer</strong> puis sur l'onglet <strong>Serveurs</strong>. Descends jusqu'en bas et clique sur <strong>Ajouter un serveur</strong>.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Entre l'IP du serveur</div>
+            <div class="step-desc">Renseigne le nom, l'adresse IP et le port ci-dessous, puis valide et rejoins !</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- IP -->
+    <section class="wiki-section" id="ip">
+      <div class="section-head">
+        <div class="section-icon blue">🌐</div>
+        <div class="section-title">IP &amp; Connexion</div>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-icon">🔗</div>
+          <div class="info-card-title">Adresse IP</div>
+          <div class="info-card-text"><code>play.galaxiumkitmap.fr</code><br><small style="opacity:0.7;font-size:0.75rem;">À mettre à jour avec ta vraie IP</small></div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🔌</div>
+          <div class="info-card-title">Port</div>
+          <div class="info-card-text"><code>19132</code> (port Bedrock par défaut)</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">📱</div>
+          <div class="info-card-title">Plateformes</div>
+          <div class="info-card-text">Windows · Xbox · PlayStation · Switch · iOS · Android</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">💬</div>
+          <div class="info-card-title">Support</div>
+          <div class="info-card-text">Un problème ? Rejoins le <a href="https://discord.gg/GBa9nyRRh" style="color:var(--pink);">Discord</a> et ouvre un ticket.</div>
+        </div>
+      </div>
+
+      <div class="callout callout-warn">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-text"><strong>Première connexion :</strong> l'addon Galaxium KitMap se télécharge automatiquement à la connexion. Si tu as des textures manquantes, déconnecte-toi et reconnecte-toi.</div>
+      </div>
+    </section>
+
+    <!-- KITS -->
+    <section class="wiki-section" id="kits">
+      <div class="section-head">
+        <div class="section-icon pink">⚔️</div>
+        <div class="section-title">Les Kits</div>
+      </div>
+
+      <p style="color:var(--muted);font-size:0.88rem;margin-bottom:20px;">Les kits se récupèrent avec <code>/kit</code> ou via le menu <code>app</code>. Chaque kit a un cooldown — impossible de le reprendre avant qu'il soit écoulé.</p>
+
+      <table class="wiki-table">
+        <thead>
+          <tr>
+            <th>Kit</th>
+            <th>Contenu principal</th>
+            <th>Cooldown</th>
+            <th>Requis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Kit Joueur</strong></td>
+            <td>Armure Jade P3 U3 · Épée Jade Sharp4 · 64 Soups · 16 Pearls · 5 Pommes d'or</td>
+            <td><span class="tag tag-grey">—</span></td>
+            <td><span class="tag tag-green">Tous</span></td>
+          </tr>
+          <tr>
+            <td><strong>Kit Galaxium</strong></td>
+            <td>Armure Galaxium P3 U3 · Épée Galaxium Sharp4 · Pomme Galaxium · 4 Pommes d'or · 16 Pearls · 64 Soups</td>
+            <td><span class="tag tag-orange">1 heure</span></td>
+            <td><span class="tag tag-pink">Grade Galaxium</span></td>
+          </tr>
+          <tr>
+            <td><strong>Kit Galaxium Renforcé</strong></td>
+            <td>Casque &amp; Bottes Galaxium Renforcé P3 · Plastron &amp; Jamb. Galaxium P4 · Épée Galaxium Sharp5 U3 · 3 Pommes Galaxium · 64 Soups · 16 Pearls</td>
+            <td><span class="tag tag-orange">2 heures</span></td>
+            <td><span class="tag tag-violet">Grade G. Renforcé</span></td>
+          </tr>
+          <tr>
+            <td><strong>Kit Crystallium</strong></td>
+            <td>Armure Galaxium Renforcé P4 · Épée Galaxium Renforcé Sharp4 U3 · 5 Pommes Galaxium · 64 Soups · 16 Pearls</td>
+            <td><span class="tag tag-orange">3 heures</span></td>
+            <td><span class="tag tag-blue">Grade Crystallium</span></td>
+          </tr>
+          <tr>
+            <td><strong>Kit Builder</strong></td>
+            <td>Armure complète en cuir → invincible mais impossible d'attaquer</td>
+            <td><span class="tag tag-grey">—</span></td>
+            <td><span class="tag tag-green">Tous</span></td>
+          </tr>
+          <tr>
+            <td><strong>Kit Outils</strong></td>
+            <td>Pioche · Hache · Pelle · Houe en diamant Efficiency 3</td>
+            <td><span class="tag tag-grey">—</span></td>
+            <td><span class="tag tag-green">Tous</span></td>
+          </tr>
+          <tr>
+            <td><strong>Kit Refill</strong></td>
+            <td>64 Soups · 16 Pearls · 5 Pommes d'or</td>
+            <td><span class="tag tag-grey">1 min</span></td>
+            <td><span class="tag tag-green">Tous</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-text"><strong>Astuce :</strong> le <strong>Kit Refill</strong> est bloqué si tu es en combat (tag PvP actif). Utilise-le avant de te battre pour maximiser tes soups.</div>
+      </div>
+    </section>
+
+    <!-- MINERAUX -->
+    <section class="wiki-section" id="mineraux">
+      <div class="section-head">
+        <div class="section-icon orange">⛏️</div>
+        <div class="section-title">Minerais custom</div>
+      </div>
+
+      <p style="color:var(--muted);font-size:0.88rem;margin-bottom:20px;">Galaxium ajoute 4 minerais exclusifs au serveur. Les minerais de mine repoppent automatiquement 10 secondes après avoir été minés.</p>
+
+      <table class="wiki-table">
+        <thead>
+          <tr>
+            <th>Minerai</th>
+            <th>Drop obtenu</th>
+            <th>Niveau mineur requis</th>
+            <th>Rareté</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Jade Ore</strong></td>
+            <td>Jade</td>
+            <td><span class="tag tag-green">Niveau 1</span></td>
+            <td>Commun</td>
+          </tr>
+          <tr>
+            <td><strong>Galaxium Ore</strong></td>
+            <td>Nugget de Galaxium</td>
+            <td><span class="tag tag-orange">Niveau 3</span></td>
+            <td>Rare</td>
+          </tr>
+          <tr>
+            <td><strong>Random Ore</strong></td>
+            <td>Drop aléatoire (Coal → Crystallium…)</td>
+            <td><span class="tag tag-orange">Niveau 7</span></td>
+            <td>Rare</td>
+          </tr>
+          <tr>
+            <td><strong>Crystallium Ore</strong></td>
+            <td>Fragment · Nugget · Lingot de Crystallium (pondéré)</td>
+            <td><span class="tag tag-pink">Niveau 15</span></td>
+            <td>Légendaire</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-icon">🔢</div>
+          <div class="info-card-title">Hiérarchie des lingots</div>
+          <div class="info-card-text">
+            <strong>Galaxium :</strong> 9 Nuggets → 1 Lingot<br>
+            <strong>Crystallium :</strong> 9 Fragments → 1 Nugget → 9 Nuggets → 1 Lingot
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">✨</div>
+          <div class="info-card-title">Fortune</div>
+          <div class="info-card-text">L'enchantement Fortune fonctionne sur les minerais classiques (Jade, Galaxium). Il ne s'applique pas aux drops rares (Crystallium, Random Ore).</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORGE -->
+    <section class="wiki-section" id="forge">
+      <div class="section-head">
+        <div class="section-icon violet">🔥</div>
+        <div class="section-title">Galaxium Forge</div>
+      </div>
+
+      <p style="color:var(--muted);font-size:0.88rem;margin-bottom:20px;">La Forge est une structure multibloc 3×3×3 qui permet de crafter des équipements avancés. Le craft se fait en temps réel — tu lances le craft, tu attends, tu reviens récupérer.</p>
+
+      <div class="callout callout-warn">
+        <span class="callout-icon">🏗️</span>
+        <div class="callout-text"><strong>Construction de la Forge :</strong> la structure doit être construite correctement pour fonctionner. Parle à un modo sur le Discord pour qu'elle soit placée sur ta base.</div>
+      </div>
+
+      <div class="section-head" style="margin-top:28px;"><div style="font-family:var(--font-h);font-size:1rem;font-weight:600;">Structure requise</div></div>
+      <table class="wiki-table">
+        <thead><tr><th>Bloc</th><th>Quantité</th><th>Position</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Galaxium Forge</strong></td><td>1</td><td>Face avant (centre)</td></tr>
+          <tr><td><strong>Forge Core</strong></td><td>1</td><td>Derrière la Forge (centre)</td></tr>
+          <tr><td><strong>Galaxium Stabilizer</strong></td><td>3</td><td>Gauche · Droite · Dessus du Core</td></tr>
+          <tr><td><strong>Galaxium Frame</strong></td><td>22</td><td>Tous les autres blocs du cube 3×3×3</td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-head" style="margin-top:28px;"><div style="font-family:var(--font-h);font-size:1rem;font-weight:600;">Recettes Tier Base</div></div>
+
+      <div class="forge-recipe">
+        <div>
+          <div style="font-size:0.8rem;color:var(--muted);margin-bottom:8px;">Épée Galaxium Renforcé — <span style="color:var(--pink);">2 min</span></div>
+          <div class="forge-grid">
+            <div class="forge-cell"></div><div class="forge-cell filled">Poussière Nébuleuse</div><div class="forge-cell"></div>
+            <div class="forge-cell"></div><div class="forge-cell filled">Lingot Galaxium</div><div class="forge-cell"></div>
+            <div class="forge-cell"></div><div class="forge-cell filled">Bâton</div><div class="forge-cell"></div>
+          </div>
+        </div>
+        <div class="forge-arrow">→</div>
+        <div class="forge-cell output" style="width:52px;height:52px;">Épée G. Renforcé</div>
+      </div>
+
+      <div class="forge-recipe">
+        <div>
+          <div style="font-size:0.8rem;color:var(--muted);margin-bottom:8px;">Plastron Galaxium Renforcé — <span style="color:var(--pink);">5 min</span></div>
+          <div class="forge-grid">
+            <div class="forge-cell filled">G. Lingot</div><div class="forge-cell"></div><div class="forge-cell filled">G. Lingot</div>
+            <div class="forge-cell filled">G. Lingot</div><div class="forge-cell filled">×4 Poussière</div><div class="forge-cell filled">G. Lingot</div>
+            <div class="forge-cell filled">G. Lingot</div><div class="forge-cell filled">G. Lingot</div><div class="forge-cell filled">G. Lingot</div>
+          </div>
+        </div>
+        <div class="forge-arrow">→</div>
+        <div class="forge-cell output" style="width:52px;height:52px;">Plastron G. Renforcé</div>
+      </div>
+
+      <div class="callout callout-tip">
+        <span class="callout-icon">💎</span>
+        <div class="callout-text"><strong>Extension Crystallium :</strong> en payant <strong>128 Lingots de Galaxium + 12 Poussières Nébuleuses</strong>, tu débloque 6 nouvelles recettes Crystallium sur cette forge. Déblocage permanent et propre à chaque forge.</div>
+      </div>
+    </section>
+
+    <!-- BOXES -->
+    <section class="wiki-section" id="boxes">
+      <div class="section-head">
+        <div class="section-icon pink">📦</div>
+        <div class="section-title">Boxes &amp; Clés</div>
+      </div>
+
+      <p style="color:var(--muted);font-size:0.88rem;margin-bottom:20px;">Les boxes sont des shulker boxes spéciales placées sur la map. Utilise une clé correspondante pour les ouvrir et obtenir un drop aléatoire pondéré.</p>
+
+      <table class="wiki-table">
+        <thead><tr><th>Box</th><th>Clé nécessaire</th><th>Meilleur drop possible</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="tag tag-grey">Box Rare</span></td>
+            <td><code>Clé Rare</code></td>
+            <td>Clé Galaxium · 16 Diamants · Nuggets de Galaxium</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-pink">Box Galaxium</span></td>
+            <td><code>Clé Galaxium</code></td>
+            <td>Poussière Nébuleuse · Clé G. Renforcé · 16 Lingots Galaxium</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-violet">Box G. Renforcé</span></td>
+            <td><code>Clé G. Renforcé</code></td>
+            <td>Fragment Crystallium · Clé Crystallium · 32 Lingots Galaxium</td>
+          </tr>
+          <tr>
+            <td><span class="tag tag-blue">Box Crystallium</span></td>
+            <td><code>Clé Crystallium</code></td>
+            <td>Lingot Crystallium · 3 Clés Crystallium · Nugget Crystallium</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-info">
+        <span class="callout-icon">ℹ️</span>
+        <div class="callout-text">Si ton inventaire est plein au moment d'ouvrir une box, la récompense est stockée. Récupère-la avec <code>/lootbox</code>.</div>
+      </div>
+    </section>
+
+    <!-- MARKET -->
+    <section class="wiki-section" id="market">
+      <div class="section-head">
+        <div class="section-icon green">💰</div>
+        <div class="section-title">Market &amp; Économie</div>
+      </div>
+
+      <p style="color:var(--muted);font-size:0.88rem;margin-bottom:20px;">Le market est une hôtel des ventes entre joueurs. Vends tes items, achète ceux des autres. L'argent (<code>$</code>) se gagne en minant, combattant, et vendant des ressources.</p>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-icon">💸</div>
+          <div class="info-card-title">Vente rapide</div>
+          <div class="info-card-text">Tape <code>sell</code> dans le chat pour ouvrir le panel. Tu peux aussi taper <code>sell hand</code> ou <code>sell inv</code> pour vendre directement.</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🏪</div>
+          <div class="info-card-title">Mettre en vente</div>
+          <div class="info-card-text">Ouvre le market avec <code>/market</code>, va dans l'onglet VENDRE. Attention : une taxe de <strong>5%</strong> est prélevée à la mise en vente.</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">📈</div>
+          <div class="info-card-title">Prix de vente rapide</div>
+          <div class="info-card-text">Cobblestone/Stone : 1$ · Fer/Or : 10$ · Diamant : 5$ · Lingot Galaxium : <strong>20$</strong></div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">💳</div>
+          <div class="info-card-title">Transfert d'argent</div>
+          <div class="info-card-text">Envoie de l'argent à un joueur avec <code>/pay &lt;pseudo&gt; &lt;montant&gt;</code>. Voir ton solde : <code>/money</code></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FACTIONS -->
+    <section class="wiki-section" id="factions">
+      <div class="section-head">
+        <div class="section-icon orange">🏰</div>
+        <div class="section-title">Factions</div>
+      </div>
+
+      <p style="color:var(--muted);font-size:0.88rem;margin-bottom:20px;">Crée ou rejoins une faction pour protéger ta base, former des alliances et dominer la map avec tes alliés.</p>
+
+      <table class="wiki-table">
+        <thead><tr><th>Action</th><th>Commande</th></tr></thead>
+        <tbody>
+          <tr><td>Créer une faction</td><td><code>/f create &lt;nom&gt;</code></td></tr>
+          <tr><td>Inviter un joueur</td><td><code>/f invite &lt;pseudo&gt;</code></td></tr>
+          <tr><td>Accepter une invitation</td><td><code>/f accept</code></td></tr>
+          <tr><td>Quitter une faction</td><td><code>/f leave</code></td></tr>
+          <tr><td>Voir les infos</td><td><code>/f info</code></td></tr>
+          <tr><td>Claim un chunk</td><td><code>/f claim</code></td></tr>
+          <tr><td>Retirer un claim</td><td><code>/f unclaim</code></td></tr>
+          <tr><td>Définir le home</td><td><code>/f sethome</code></td></tr>
+          <tr><td>Aller au home</td><td><code>/f home</code></td></tr>
+          <tr><td>Expulser un membre</td><td><code>/f kick &lt;pseudo&gt;</code></td></tr>
+          <tr><td>Dissoudre la faction</td><td><code>/f disband</code></td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-tip">
+        <span class="callout-icon">🤝</span>
+        <div class="callout-text"><strong>Friendly fire :</strong> les membres d'une même faction ne peuvent pas se blesser mutuellement. Le PvP entre factions alliées est également désactivé.</div>
+      </div>
+    </section>
+
+    <!-- METIERS -->
+    <section class="wiki-section" id="metiers">
+      <div class="section-head">
+        <div class="section-icon violet">🎖️</div>
+        <div class="section-title">Métiers</div>
+      </div>
+
+      <p style="color:var(--muted);font-size:0.88rem;margin-bottom:20px;">Il y a 3 métiers qui progressent automatiquement selon tes actions. Monte de niveau pour débloquer l'accès à des minerais plus rares.</p>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-icon">⛏️</div>
+          <div class="info-card-title">Mineur</div>
+          <div class="info-card-text">Gagne de l'XP en minant des blocs. Niveau 3 requis pour Galaxium Ore, niveau 7 pour Random Ore, niveau 15 pour Crystallium.</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🌾</div>
+          <div class="info-card-title">Farmeur</div>
+          <div class="info-card-text">Gagne de l'XP en récoltant des cultures à maturité complète. Les plantes non mûres ne donnent pas d'XP.</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">⚔️</div>
+          <div class="info-card-title">Guerrier</div>
+          <div class="info-card-text">Gagne 50 XP à chaque kill de joueur. Active l'affichage dans la sidebar avec <code>/settings</code>.</div>
+        </div>
+      </div>
+
+      <p style="font-size:0.82rem;color:var(--muted);">Voir ta progression avec <code>/job</code>. Un admin peut consulter ton niveau avec <code>/jobadmin</code>.</p>
+    </section>
+
+    <!-- PVP -->
+    <section class="wiki-section" id="pvp">
+      <div class="section-head">
+        <div class="section-icon pink">🗡️</div>
+        <div class="section-title">Règles PvP &amp; Combat</div>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-icon">⏱️</div>
+          <div class="info-card-title">Combat Tag</div>
+          <div class="info-card-text">Quand tu frappes ou reçois un coup, tu es <strong>en combat 15 secondes</strong>. Pendant ce temps : pas de TP, pas de menu, pas de refill.</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🔄</div>
+          <div class="info-card-title">Régénération</div>
+          <div class="info-card-text">La régénération naturelle est <strong>désactivée</strong>. Utilise tes soups (soupe de champignons) pour te soigner en combat.</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🚫</div>
+          <div class="info-card-title">Anti-Pearl</div>
+          <div class="info-card-text">Il existe des zones avec des blocs <strong>Anti-Perle</strong>. Les Ender Pearls ne fonctionnent pas dans ces zones.</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">📏</div>
+          <div class="info-card-title">Knockback</div>
+          <div class="info-card-text">Le knockback est configuré par les admins. Voir le preset actif et les infos dans le panneau de settings.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOUPS -->
+    <section class="wiki-section" id="soups">
+      <div class="section-head">
+        <div class="section-icon green">🍜</div>
+        <div class="section-title">Soups &amp; Perles</div>
+      </div>
+
+      <table class="wiki-table">
+        <thead><tr><th>Item</th><th>Limite</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Galaxium Soup</strong></td>
+            <td><span class="tag tag-orange">64 max</span></td>
+            <td>Se soigne à l'utilisation. L'excédent est retiré dès l'entrée en combat.</td>
+          </tr>
+          <tr>
+            <td><strong>Ender Pearl</strong></td>
+            <td><span class="tag tag-orange">16 max</span></td>
+            <td>Cooldown de 16 secondes entre chaque utilisation.</td>
+          </tr>
+          <tr>
+            <td><strong>Pomme d'or</strong></td>
+            <td>Aucune</td>
+            <td>Obtenue via kits et boxes.</td>
+          </tr>
+          <tr>
+            <td><strong>Pomme Galaxium</strong></td>
+            <td>Aucune</td>
+            <td>Absorption II 5min + Régén II 30s + Résistance 2min + Résist. au feu 2min.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- COMMANDES -->
+    <section class="wiki-section" id="commandes">
+      <div class="section-head">
+        <div class="section-icon blue">📋</div>
+        <div class="section-title">Toutes les commandes</div>
+      </div>
+
+      <table class="wiki-table">
+        <thead><tr><th>Commande</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>app</code> (chat)</td><td>Ouvre le menu principal (Kit · Market · Paramètres)</td></tr>
+          <tr><td><code>/kit</code></td><td>Ouvre le panel de sélection de kit</td></tr>
+          <tr><td><code>/refill</code></td><td>Récupère soups + pearls + pommes d'or (cooldown 1min)</td></tr>
+          <tr><td><code>/market</code> ou <code>/ah</code></td><td>Ouvre le market joueur</td></tr>
+          <tr><td><code>sell</code> / <code>sell hand</code> / <code>sell inv</code></td><td>Vente rapide d'items</td></tr>
+          <tr><td><code>shop</code></td><td>Ouvre le shop du serveur</td></tr>
+          <tr><td><code>/money</code></td><td>Affiche ton solde</td></tr>
+          <tr><td><code>/pay &lt;pseudo&gt; &lt;montant&gt;</code></td><td>Envoie de l'argent</td></tr>
+          <tr><td><code>/coord</code></td><td>Active/désactive l'affichage des coordonnées</td></tr>
+          <tr><td><code>/settings</code></td><td>Paramètres HUD (sidebar, kills, K/D, argent…)</td></tr>
+          <tr><td><code>/stats [pseudo]</code></td><td>Affiche tes statistiques (kills, morts, K/D, argent…)</td></tr>
+          <tr><td><code>/job</code></td><td>Affiche ta progression de métiers</td></tr>
+          <tr><td><code>/top &lt;catégorie&gt;</code></td><td>Classement (argent · mineur · farmeur · guerrier · kill)</td></tr>
+          <tr><td><code>/spawn</code></td><td>TP au spawn</td></tr>
+          <tr><td><code>/mine</code> / <code>/minage</code></td><td>TP à la zone de minage</td></tr>
+          <tr><td><code>/tpa &lt;pseudo&gt;</code></td><td>Demande un TP vers un joueur</td></tr>
+          <tr><td><code>/tpahere &lt;pseudo&gt;</code></td><td>Demande à un joueur de venir chez toi</td></tr>
+          <tr><td><code>/tpaccept</code> / <code>/tpdeny</code></td><td>Accepter ou refuser un TPA</td></tr>
+          <tr><td><code>/mp &lt;pseudo&gt; &lt;message&gt;</code></td><td>Message privé</td></tr>
+          <tr><td><code>craft</code> (chat)</td><td>Pose une table de craft virtuelle devant toi</td></tr>
+          <tr><td><code>/lootbox</code></td><td>Récupère les récompenses stockées (invt plein)</td></tr>
+          <tr><td><code>/report &lt;pseudo&gt; &lt;raison&gt;</code></td><td>Signale un joueur aux modérateurs</td></tr>
+          <tr><td><code>/f &lt;action&gt;</code></td><td>Gestion de faction (voir section Factions)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- GRADE -->
+    <section class="wiki-section" id="grade">
+      <div class="section-head">
+        <div class="section-icon pink">⭐</div>
+        <div class="section-title">Grade Galaxium</div>
+      </div>
+
+      <div class="kit-box">
+        <div class="kit-header">
+          <div>
+            <div class="kit-name">Grade Galaxium — <span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">5,99€</span></div>
+            <div class="kit-cooldown">Soutiens le serveur et profite d'avantages exclusifs</div>
+          </div>
+          <span class="tag tag-pink">Premium</span>
+        </div>
+        <div class="kit-items">
+          <div class="kit-item">Table de craft virtuelle : <code>/craft</code> ou <code>/wb</code></div>
+          <div class="kit-item">1 PlayerVault : <code>/pv 1</code></div>
+          <div class="kit-item">Téléportation en <strong>3 secondes</strong> au lieu de 5</div>
+          <div class="kit-item">Préfixe <strong>[Galaxium]</strong> dans le chat</div>
+          <div class="kit-item">Pseudo en couleur dans le chat</div>
+          <div class="kit-item">Accès au <strong>Kit Galaxium</strong> (cooldown 1h)</div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;" class="callout callout-tip">
+        <span class="callout-icon">💳</span>
+        <div class="callout-text"><strong>Comment acheter ?</strong> Clique sur "Acheter" depuis la <a href="index.html#boutique" style="color:var(--pink);">boutique</a>, saisis ton pseudo Minecraft, et tu seras redirigé vers le paiement. Le grade est activé manuellement par un admin sous 24h.</div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer style="border-top:1px solid var(--border);background:var(--bg);padding:32px;text-align:center;">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div style="font-family:var(--font-h);font-size:1rem;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;">◈ Galaxium KitMap</div>
+    <p style="font-size:0.78rem;color:var(--muted);">© 2026 Galaxium KitMap · Non affilié à Mojang / Microsoft · Tous droits réservés</p>
+  </div>
+</footer>
+
+<script>
+document.getElementById('menuToggle').addEventListener('click', () => {
+  document.getElementById('nav').classList.toggle('open');
+});
+
+// Active sidebar link on scroll
+const sections = document.querySelectorAll('.wiki-section');
+const links = document.querySelectorAll('.sidebar-link');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector('.sidebar-link[href="#' + entry.target.id + '"]');
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
